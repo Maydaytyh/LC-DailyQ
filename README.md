@@ -6,7 +6,7 @@
 DFS/BFS染色、并查集
 #### 代码
 ``` C++
-    class Solution {
+class Solution {
 public:
 //并查集版本
     vector<int> father;
@@ -35,6 +35,7 @@ public:
         return (father[x]==x)?x:getfather(father[x]);
     }
 };
+//DFS版本
 class Solution {
 public:
     vector<int> v;
