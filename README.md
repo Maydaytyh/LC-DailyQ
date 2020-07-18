@@ -99,3 +99,57 @@ public:
     }
 };
 ```
+
+### 2020.7.18
+#### 题目 [97.交错字符串](https://leetcode-cn.com/problems/interleaving-string/)
+#### 思路
+dp、思维
+
+
+
+难点在于关系式的书写，用dp(i,j)表示用s1的前i个字符和s2的前j个字符能否表示s3的前i+j个字符，这其实是一种思维的培养吧。
+
+关于空间优化，滚动数组其实也是下意识的，因为第i行只和第i行和第i-1行有关，所以可以进行优化。
+
+``` C++
+//未优化空间
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        if(s3.length()!=s1.length()+s2.length()) return false;
+        int l1=s1.length(),l2=s2.length();
+        vector<vector<int> > dp(l1+1,vector<int>(l2+1,0));
+        dp[0][0]=1;
+        for(int i=0;i<=l1;++i)
+         for(int j=0;j<=l2;++j)
+         {
+             int pos=i+j-1;
+             if(i>0&&s1[i-1]==s3[pos]&&dp[i-1][j])
+                dp[i][j]=1;
+             else if(j>0&&s2[j-1]==s3[pos]&&dp[i][j-1])
+                dp[i][j]=1;
+            
+         }
+         if(dp[l1][l2]) return true;
+         return false;
+    }
+};
+//滚动数组优化解法
+class Solution {
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        if(s3.length()!=s1.length()+s2.length()) return false;
+        int l1=s1.length(),l2=s2.length();
+        vector<int> dp(l2+1,0);
+        dp[0]=1;
+        for(int i=0;i<=l1;++i)
+            for(int j=0;j<=l2;++j)
+            {
+                if(i>0) dp[j]=(s1[i-1]==s3[i+j-1]&&dp[j]);
+                if(j>0) dp[j]|=(s2[j-1]==s3[i+j-1]&&dp[j-1]);
+            }
+            if(dp[l2]) return true;
+            return false;
+    }
+};
+```
