@@ -1,7 +1,7 @@
 # LC-DailyQ
 
 ### 2020.7.16
-#### 题目 [785判断二分图](https://leetcode-cn.com/problems/is-graph-bipartite/)
+#### 题目 ：[785判断二分图](https://leetcode-cn.com/problems/is-graph-bipartite/)
 #### 思路
 DFS/BFS染色、并查集
 #### 代码
@@ -69,7 +69,7 @@ public:
 };
 ```
 ### 2020.7.17
-#### 题目 [35.搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)
+#### 题目： [35.搜索插入位置](https://leetcode-cn.com/problems/search-insert-position/)
 #### 思路
 二分、lower_bound
 #### 代码
@@ -101,15 +101,15 @@ public:
 ```
 
 ### 2020.7.18
-#### 题目 [97.交错字符串](https://leetcode-cn.com/problems/interleaving-string/)
+#### 题目： [97.交错字符串](https://leetcode-cn.com/problems/interleaving-string/)
 #### 思路
 dp、思维
-
-
 
 难点在于关系式的书写，用dp(i,j)表示用s1的前i个字符和s2的前j个字符能否表示s3的前i+j个字符，这其实是一种思维的培养吧。
 
 关于空间优化，滚动数组其实也是下意识的，因为第i行只和第i行和第i-1行有关，所以可以进行优化。
+
+#### 代码
 
 ``` C++
 //未优化空间
@@ -153,3 +153,82 @@ public:
     }
 };
 ```
+
+### 2020.7.20
+
+#### 题目：[167.两数之和Ⅱ-输入有序数组](https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/)
+
+#### 思路
+
+二分查找、双指针、哈希表
+
+#### 代码
+
+``` c++
+//二分
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        // vector<int> ans;
+        for(int i=0;i<numbers.size();++i)
+        {
+            int left=i+1;int right=numbers.size()-1;
+            int x=target-numbers[i];
+            while(left<=right)
+            {
+                int mid=(left+right)>>1;
+                if(numbers[mid]>x) right=mid-1;
+                else if(numbers[mid]<x) left=mid+1;
+                else 
+                {
+                    return {i + 1, mid + 1};
+                }
+            }
+        }
+        return {-1,-1};
+    }
+};
+//双指针
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+       int left=0,right=numbers.size()-1;
+       while(left<right)
+       {
+           int sum=numbers[left]+numbers[right];
+           if(sum==target) return {left+1,right+1};
+           else if(sum>target) right--;
+           else left++;
+       }
+       return {-1,-1};
+    }
+};
+//哈希表
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+      map<int,int> mp;
+      for(int i=numbers.size()-1;i>=0;--i)
+      {
+          mp[numbers[i]]=i+1;
+      }
+      for(int i=0;i<numbers.size();++i)
+      {
+          int x=target-numbers[i];
+          if(mp[x]>0)
+          {
+              if(x==numbers[i]) 
+                return {mp[numbers[i]],mp[x]+1};
+            else return {mp[numbers[i]],mp[x]};
+          }
+      }
+      return {-1,-1};
+    }
+};
+```
+
+#### 今日感悟
+
+二分查找一般还是加上等号吧，遇到其他情况再学习。
+
+关于重复元素用哈希表来存储第一个元素出现的位置也很有灵性。
