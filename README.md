@@ -232,3 +232,54 @@ public:
 二分查找一般还是加上等号吧，遇到其他情况再学习。
 
 关于重复元素用哈希表来存储第一个元素出现的位置也很有灵性。
+
+### 2020.7.22
+
+#### 题目：[剑指offer11.旋转数组的最小数字](https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/)
+
+#### 思路
+
+- 暴力，判断哪儿下降了即可，单独判断是不是a[0]<a[n-1]，是的话说明没有进行旋转变换。
+
+- 二分，可能我对二分理解还是有偏差。。根本没想到，不过确实这里可以用。
+
+#### 代码
+
+``` c++
+//二分
+class Solution {
+public:
+    int minArray(vector<int>& numbers) {
+        int n=numbers.size();
+        if(numbers[0]<numbers[n-1])
+        {
+            return numbers[0];
+        }
+        int l=0,r=n-1;
+        while(l<r)
+        {
+            if(r-l==1) return numbers[l]<numbers[r]?numbers[l]:numbers[r];//两个元素中较小的一个直接返回
+            int mid=l+(r-l)/2;
+            if(numbers[mid]>numbers[r]) l=mid;//如果中间大于r，说明最小元素在右侧区间
+            else if(numbers[mid]==numbers[r]) r--;//如果等于的话，则不好判断，挨个减一进行判断，把握住缩小区间即可。
+            else r=mid;//如果小于r，说明最小元素还在前面
+        }
+        return numbers[l];
+    }
+};
+//暴力
+class Solution {
+public:
+    int minArray(vector<int>& numbers) {
+        if(numbers[0]<numbers[numbers.size()-1]) return numbers[0];
+        for(int i=0;i<numbers.size()-1;++i)
+        {
+            if(numbers[i]>numbers[i+1]) return numbers[i+1];
+        }
+        return numbers[0];
+    }
+};
+```
+
+
+
