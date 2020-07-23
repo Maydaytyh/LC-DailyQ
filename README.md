@@ -280,6 +280,67 @@ public:
     }
 };
 ```
-
-
+### 2020.7.23
+#### 题目：[64.最小路径和](https://leetcode-cn.com/problems/minimum-path-sum/)
+#### 思路
+- 动态规划，当前状态只和上方、左方的状态有关系，关系式子很好写。
+- 空间压缩，注意到只用了两行数据，从而可以只使用一维数组来达到空间优化
+#### 代码：
+``` C++
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m=grid.size();
+        int n=grid[0].size();
+        // cout<<"m="<<m<<"n="<<n<<endl;
+        // vector<vector<int>> dp(m+1,vector<int>(n+1,0));
+        // dp[0][0]=grid[0][0];
+        // if(m>1){
+        
+        // dp[1][0]=dp[0][0]+grid[1][0];
+        // }
+        // if(n>1)
+        // {
+        //     dp[0][1]=dp[0][0]+grid[0][1];
+        // }
+        // for(int i=0;i<m;++i)
+        //     for(int j=0;j<n;++j)
+        //     {
+        //         if(i==0&&j==0) continue;
+        //         else if(i==0)
+        //         {
+        //             dp[i][j]=dp[i][j-1]+grid[i][j];
+        //         }
+        //         else if(j==0)
+        //         {
+        //             dp[i][j]=dp[i-1][j]+grid[i][j];
+        //         }
+        //         else
+        //             dp[i][j]=min(dp[i-1][j],dp[i][j-1])+grid[i][j];
+        //     }
+        // return dp[m-1][n-1];
+        vector<int> dp(n+1,0);
+        dp[0]=grid[0][0];
+        
+        // for(int i=1;i<n;++i) dp[i]=dp[i-1]+grid[0][i];
+        for(int i=0;i<m;++i)
+            for(int j=0;j<n;++j)
+            {
+                if(i==0&&j==0) continue;
+                else if(i==0)
+                {
+                    dp[j]=dp[j-1]+grid[i][j];
+                } 
+                else if(j==0) dp[j]=dp[0]+grid[i][j];
+                else{
+                    dp[j]=min(dp[j],dp[j-1])+grid[i][j];
+                }
+                // cout<<"j="<<j<<"ans="<<dp[j]<<endl;
+            }
+        return dp[n-1];
+    }
+};
+```
+#### 今日感悟
+动态规划越来越有以前的感觉了，但是不知道为什么，没有优化空间的时候，运行时间反而更短，这一点没想明白。
 
