@@ -344,3 +344,17 @@ public:
 #### 今日感悟
 动态规划越来越有以前的感觉了，但是不知道为什么，没有优化空间的时候，运行时间反而更短，这一点没想明白。
 
+### 2020.7.24
+#### 题目：[1025.除数博弈](https://leetcode-cn.com/problems/divisor-game/)
+#### 思路
+- 博弈论，其实判断一下1的状态为必败，且从2可以转移到1，同理，从n可以转移到n-1，而最后1的状态为必败，所以可推出奇数为必败，偶数为必胜。
+#### 代码
+``` C++
+class Solution {
+public:
+    bool divisorGame(int N) {
+        if(N%2==0) return true;
+        return false;
+    }
+};
+```
